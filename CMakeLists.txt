@@ -17,9 +17,14 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+#todo needeD?????
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+
+include_directories(include)
+add_executable(vehicle_controller src/vehicle_controller.cpp)
+ament_target_dependencies(vehicle_controller rclcpp std_msgs)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -35,6 +40,11 @@ endif()
 install(
   DIRECTORY config description launch worlds
   DESTINATION share/${PROJECT_NAME}
+)
+
+install(TARGETS
+  vehicle_controller
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()
