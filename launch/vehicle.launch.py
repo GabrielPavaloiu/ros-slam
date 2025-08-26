@@ -63,11 +63,6 @@ def start_vehicle_control():
 
 
 def generate_launch_description():
-    # Define a launch argument for the world file, defaulting to "empty.sdf"
-    world_arg = DeclareLaunchArgument(
-        'world', default_value='empty.sdf',
-        description='Specify the world file for Gazebo (e.g., empty.sdf)')
-
     # Define launch arguments for initial pose
     x_arg = DeclareLaunchArgument('x', default_value='0.0',
                                   description='Initial X position')
@@ -164,6 +159,17 @@ def generate_launch_description():
                                    executable='vehicle_controller',
                                    parameters=[vehicle_params_path],
                                    output='screen')
+    
+    # Define a launch argument for the world file, defaulting to "empty.world"
+    world_arg = DeclareLaunchArgument(
+        'world',
+        # default_value="empty.sdf",
+            default_value=os.path.join(
+                package_path,
+                'worlds',
+                'empty.sdf'
+            ),
+        description='Specify the world file for Gazebo (e.g., empty.world)')
 
     # Create the launch description
     launch_description = LaunchDescription([
