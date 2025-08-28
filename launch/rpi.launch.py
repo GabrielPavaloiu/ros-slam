@@ -44,22 +44,16 @@ def start_vehicle_control():
     """
     joint_state_controller = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state',
-             'active', 'joint_state_broadcaster'],
+             'active', 'joint_broad'],
         output='screen')
 
-    forward_velocity_controller = ExecuteProcess(
+    ack_cont = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state',
-             'active', 'forward_velocity_controller'],
-        output='screen')
-
-    forward_position_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'forward_position_controller'],
+             'active', 'ack_cont'],
         output='screen')
 
     return (joint_state_controller,
-            forward_velocity_controller,
-            forward_position_controller)
+            ack_cont)
 
 
 def generate_launch_description():
@@ -152,7 +146,7 @@ def generate_launch_description():
                           output='screen')
 
     # Start controllers
-    joint_state, forward_velocity, forward_position = start_vehicle_control()
+    joint_state, ack_cont = start_vehicle_control()
 
     # Load vehicle controller node
     vehicle_controller_node = Node(package='my_bot',
@@ -178,8 +172,7 @@ def generate_launch_description():
                                         on_exit=[joint_state])),
         RegisterEventHandler(
             event_handler=OnProcessExit(target_action=joint_state,
-                                        on_exit=[forward_velocity,
-                                                 forward_position])),
+                                        on_exit=[ack_cont])),
         world_arg,
         gazebo_launch,
         x_arg,
