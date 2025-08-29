@@ -46,7 +46,7 @@ def generate_launch_description():
         parameters=[robot_controllers],
         output="both",
     )
-    robot_ack_controller_spawner = Node(
+    robot_state_pub_ack_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="both",
@@ -97,7 +97,7 @@ def generate_launch_description():
 
     nodes = [
         control_node,
-        robot_ack_controller_spawner,
+        robot_state_pub_ack_node,
         robot_ack_controller_spawner_remapped,
         robot_ack_controller_spawner,
         delay_joint_state_broadcaster_after_robot_controller_spawner_remapped,
